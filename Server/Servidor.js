@@ -4,17 +4,22 @@
 //const express = require('express')
 import express from 'express'   
 
-//importar Dotenv
-//require('dotenv').config()
+//importar ruta
+import {rutas} from "../routes/rutas.js"
 
-    
+import { conectar} from '../Database/conexion.js' 
+
 //programar la clase servidor
 
 export class Servidor{
     constructor()
     {
+        //express es el que permite gacer todo, entrutar,peticones etc
         this.app = express()
+        this.conectarConBD()
+        this.llamarAuxiliares()
         this.enrutarPeticiones()
+    
     }
     //metodos del servidor (¿que hace?)
 
@@ -26,25 +31,17 @@ export class Servidor{
     }
     enrutarPeticiones()
     {
-       this.app.get('/api/v1/viernes', function (req, res) {
-            res.send('Hello World')
-        })
+        //use significa habiliar - usar 
+      this.app.use('/',rutas)
 
-        this.app.get('/api/v1/viernes', function (req, res) {
-            res.send('Hello World')
-        })
-        
-        this.app.post('/api/v1/viernes', function (req, res) {
-            res.send('Hello World')
-        })
-
-        this.app.put('/api/v1/viernes', function (req, res) {
-            res.send('Hello World')
-        })
-
-        this.app.delete('/api/v1/viernes', function (req, res) {
-            res.send('Hello World')
-        })
-
+    }
+    //nos permite recibir los datos por el body
+    llamarAuxiliares()
+    {
+        this.app.use(express.json())
+    }
+    conectarConBD()
+    {
+        conectar()
     }
 }
